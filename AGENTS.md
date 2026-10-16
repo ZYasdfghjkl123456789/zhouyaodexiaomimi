@@ -14,3 +14,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Preserve the quiet black-box cinema/gallery direction: matte black surfaces, oversized Chinese typography, full-bleed cinematic imagery, near-invisible UI chrome, hairline dividers, and a single acid-lime playback accent.
 - Keep the page image-led and restrained. Avoid template-like card grids, decorative gradients, glassmorphism, neon cyberpunk styling, and excessive rounded corners.
 - The intended surface is desktop-first React + Vite with a maximum content width of 1700px.
+- The public default identity is 周耀. Browser metadata and the initial homepage render must never flash or fall back to 李万民 before remote content loads.

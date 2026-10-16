@@ -1,11 +1,11 @@
 import COS from "cos-js-sdk-v5";
 
-export const COS_BUCKET = "liwanmin-0115-1454067572";
+export const COS_BUCKET = "zhouyaoxiaomimi-1508436871";
 export const COS_REGION = "ap-guangzhou";
 export const COS_PUBLIC_BASE_URL = `https://${COS_BUCKET}.cos.${COS_REGION}.myqcloud.com`;
 export const CONTENT_MANIFEST_KEY = "site/liwanmin-portfolio.json";
 
-const CONFIG_STORAGE_KEY = "liwanmin_cos_admin_config";
+const CONFIG_STORAGE_KEY = `liwanmin_cos_admin_config_${COS_BUCKET}`;
 
 export function cosAsset(fileName) {
   return `${COS_PUBLIC_BASE_URL}/assets/${fileName}`;
@@ -24,7 +24,10 @@ export function loadCosConfig() {
 }
 
 export function saveCosConfig(config) {
-  localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify({ secretId: config.secretId.trim(), secretKey: config.secretKey.trim() }));
+  const secretId = config.secretId.trim();
+  const secretKey = config.secretKey.trim();
+  if (!secretId || !secretKey) throw new Error("请完整填写 SecretId 和 SecretKey。");
+  localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify({ secretId, secretKey }));
 }
 
 export function isCosConfigured() {

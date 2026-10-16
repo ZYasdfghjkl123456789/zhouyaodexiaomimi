@@ -15,8 +15,12 @@
 
 ## COS CORS
 
-在 COS 控制台为桶 `liwanmin-0115-1454067572` 添加 CORS 规则：
+在 COS 控制台为桶 `zhouyaoxiaomimi-1508436871`（广州，`ap-guangzhou`）添加 CORS 规则：
 
 - Origin：`https://zyasdfghjkl123456789.github.io`
 - Methods：`GET, PUT, HEAD, POST`
 - Allowed Headers：`*`
+- Expose Headers：`ETag`、`Content-Length`、`x-cos-request-id`
+- Max-Age：`600`
+
+网站后台只能使用权限限制到该存储桶的子账号密钥，不能使用腾讯云主账号永久密钥。更安全的正式方案是由服务端签发 STS 临时密钥。

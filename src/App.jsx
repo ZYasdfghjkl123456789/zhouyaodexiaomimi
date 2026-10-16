@@ -6,7 +6,6 @@ import {
   EnvelopeSimple,
   List,
   Phone,
-  Play,
   X,
 } from "@phosphor-icons/react";
 import BlurText from "./components/BlurText";
@@ -83,17 +82,13 @@ export function App() {
     <main>
       <header className="site-header">
         <a className="chapter-mark" href="#home" aria-label="返回首页">
-          <span /> 01 · 首页
+          {content.profile?.displayName || "周耀"}
         </a>
         <nav className={menuOpen ? "nav is-open" : "nav"} aria-label="主导航">
           <a href="#about" onClick={closeMenu}>关于</a>
-          <i>/</i>
           <a href="#projects" onClick={closeMenu}>项目</a>
-          <i>/</i>
           <a href="#gallery" onClick={closeMenu}>画廊</a>
-          <i>/</i>
           <a href="#strengths" onClick={closeMenu}>能力</a>
-          <i>/</i>
           <a href="#contact" onClick={closeMenu}>联系</a>
         </nav>
         <a className="header-contact" href={`mailto:${content.profile?.email || "13673958331@163.com"}?subject=作品合作咨询`}>
@@ -105,54 +100,54 @@ export function App() {
       </header>
 
       <section className="hero" id="home" aria-labelledby="hero-title">
-        <div className="hero-media" aria-hidden="true">
-          <img
-            src={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
-            data-fallback-src={localAsset("hero-editor-studio.png")}
-            onError={useLocalAssetFallback}
-            alt=""
-          />
-          {content.siteMedia.heroVideo && (
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              src={content.siteMedia.heroVideo}
-              poster={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
-            />
-          )}
-        </div>
-        <div className="hero-shade" />
         <div className="hero-content page-shell">
           <div className="hero-copy">
-            <BlurText as="p" text="EDITOR · AI DESIGNER · AI COMIC" delay={90} className="eyebrow" />
-            <ParticleText
-              id="hero-title"
-              className="hero-title-particles"
-              text={content.profile?.displayName || "周耀"}
-              particleSize={1.35}
-              density={6}
-              color="#f1f2ee"
-              highlightColor="#aab4c1"
-              scatter={54}
-              gatherDuration={1250}
-              stagger={260}
-              pointerRepel={12}
-              repelRadius={76}
-              idleDrift={0.16}
-              trigger="hover"
-              fontSize="clamp(5.25rem, 9.4vw, 10.75rem)"
-              fontWeight={650}
-              fontFamily="inherit"
-              align="left"
-              shape="circle"
-            />
+            <p className="hero-kicker">剪辑师 / AI 视觉创作者</p>
+            <h1 id="hero-title" className="hero-name">{content.profile?.displayName || "周耀"}</h1>
             <BlurText as="p" text={content.profile?.heroRole || "剪辑师 / AI设计师 / AI漫剧"} delay={75} className="hero-role" />
             <a className="play-link" href="#projects" data-reveal>
-              <span><Play size={13} weight="fill" /></span>
-              PLAY REEL
+              查看作品 <ArrowRight size={18} />
             </a>
+          </div>
+          <div className="hero-frame">
+            <div className="hero-media" aria-hidden="true">
+              <img
+                src={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
+                data-fallback-src={localAsset("hero-editor-studio.png")}
+                onError={useLocalAssetFallback}
+                alt=""
+              />
+              {content.siteMedia.heroVideo && (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  src={content.siteMedia.heroVideo}
+                  poster={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
+                />
+              )}
+            </div>
+            <ParticleText
+              className="hero-particle-mark"
+              text="ZY"
+              particleSize={1.15}
+              density={7}
+              color="#eceee9"
+              highlightColor="#9ca7b0"
+              scatter={28}
+              gatherDuration={900}
+              stagger={140}
+              pointerRepel={8}
+              repelRadius={58}
+              idleDrift={0.1}
+              trigger="hover"
+              fontSize="clamp(2.8rem, 5vw, 5.5rem)"
+              fontWeight={620}
+              fontFamily="inherit"
+              align="center"
+              shape="circle"
+            />
           </div>
         </div>
       </section>
@@ -187,10 +182,7 @@ export function App() {
 
       <section className="projects projects--cleared" id="projects">
         <div className="section-heading page-shell">
-          <div>
-            <BlurText as="p" text="PROJECTS" delay={100} className="eyebrow" />
-            <BlurText as="h2" text="精选项目" delay={150} />
-          </div>
+          <BlurText as="h2" text="精选项目" delay={150} />
         </div>
         <div className="project-categories page-shell">
           {[
@@ -198,7 +190,7 @@ export function App() {
             ["02", "其他板块", "OTHER WORKS", "otherWorks"],
           ].map(([number, title, label, category]) => {
             const projects = content.projects.filter((project) => (project.category || "shortDrama") === category);
-            return <button className="project-category-card project-category-button" type="button" key={category} data-reveal onClick={() => setActiveCategory({ title, label, projects })}><div className="project-category-topline"><span>{number}</span><i aria-hidden="true" /></div><div className="project-category-title"><BlurText as="small" text={label} delay={80} /><BlurText as="h3" text={title} delay={120} /></div><span className="project-category-enter">查看 {projects.length ? `${projects.length} 个项目` : "项目"} →</span></button>;
+            return <button className="project-category-card project-category-button" type="button" key={category} data-reveal onClick={() => setActiveCategory({ title, label, projects })}><span className="project-category-index">{number}</span><div className="project-category-title"><BlurText as="h3" text={title} delay={120} /><BlurText as="small" text={label} delay={80} /></div><span className="project-category-enter">{projects.length ? `${projects.length} 个项目` : "查看项目"} <ArrowRight size={18} /></span></button>;
           })}
         </div>
       </section>
@@ -206,7 +198,6 @@ export function App() {
       <section className="gallery" id="gallery" aria-labelledby="gallery-title">
         <div className="section-heading gallery-heading page-shell">
           <div>
-            <BlurText as="p" text="AI VISUAL ARCHIVE" delay={80} className="eyebrow" />
             <BlurText as="h2" text="AI 图片资产" delay={130} id="gallery-title" />
           </div>
           <BlurText
@@ -219,7 +210,7 @@ export function App() {
         <div className="gallery-groups page-shell">
           {[ ["characters", "人物资产图", "CHARACTER ASSETS"], ["scenes", "场景资产图", "SCENE ASSETS"] ].map(([category, title, label]) => {
             const assets = content.galleryAssets.filter((asset) => (asset.category || "characters") === category);
-            return <section className="gallery-group" key={category}><div className="gallery-group-title"><small>{label}</small><h3>{title}</h3><span>{assets.length.toString().padStart(2, "0")}</span></div><div className="gallery-grid">
+            return <section className="gallery-group" key={category}><div className="gallery-group-title"><h3>{title}</h3><small>{label}</small></div><div className="gallery-grid">
           {assets.map((asset, index) => (
             <button
               className={`gallery-item gallery-item--${index + 1}`}
@@ -230,10 +221,7 @@ export function App() {
               data-reveal
             >
               <img src={asset.url || cosAsset(asset.fileName)} data-fallback-src={asset.fileName ? localAsset(asset.fileName) : ""} onError={useLocalAssetFallback} alt={asset.alt} loading="lazy" />
-              <span className="gallery-item-shade" />
-              <span className="gallery-item-index">{String(index + 1).padStart(2, "0")} / {String(assets.length).padStart(2, "0")}</span>
               <span className="gallery-item-copy">
-                <BlurText as="small" text="AI GENERATED ASSET" delay={55} />
                 <BlurText as="strong" text={asset.label} delay={85} />
               </span>
             </button>
@@ -245,13 +233,11 @@ export function App() {
 
       <section className="workflow page-shell" aria-labelledby="workflow-title">
         <div className="workflow-title">
-          <BlurText as="p" text="WORKFLOW" delay={100} className="eyebrow" />
           <BlurText as="h2" text="我的创作流程" delay={115} id="workflow-title" />
         </div>
         <div className="workflow-steps">
           {workflow.map((step, index) => (
             <div key={step}>
-              <span>0{index + 1}</span>
               <BlurText as="strong" text={step} delay={80} />
               {index < workflow.length - 1 && <ArrowRight size={20} />}
             </div>
@@ -260,11 +246,10 @@ export function App() {
       </section>
 
       <section className="strengths page-shell" id="strengths">
-        <BlurText as="p" text="STRENGTHS" delay={100} className="eyebrow" />
+        <BlurText as="h2" text="核心能力" delay={100} />
         <div className="strength-grid">
           {strengths.map(([id, title, body]) => (
             <article key={id}>
-              <span>{id}</span>
               <BlurText as="h3" text={title} delay={100} />
               <BlurText text={body} delay={38} />
             </article>
@@ -277,47 +262,30 @@ export function App() {
       </section>
 
       <section className="contact" id="contact">
-        <div className="contact-media" aria-hidden="true">
-          <img src={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")} data-fallback-src={localAsset("contact-lighthouse.png")} onError={useLocalAssetFallback} alt="" />
-          {content.siteMedia.contactVideo && (
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              src={content.siteMedia.contactVideo}
-              poster={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")}
-            />
-          )}
-        </div>
-        <div className="contact-overlay" />
         <div className="contact-content page-shell">
-          <BlurText as="p" text="CONTACT" delay={100} className="eyebrow" />
-          <ParticleText
-            className="contact-title-particles"
-            text={"期待与你合作，\n把好故事变成好作品。"}
-            particleSize={1.25}
-            density={6}
-            color="#f1f2ee"
-            highlightColor="#aab4c1"
-            scatter={44}
-            gatherDuration={1200}
-            stagger={220}
-            pointerRepel={10}
-            repelRadius={72}
-            idleDrift={0.14}
-            trigger="hover"
-            fontSize="clamp(3rem, 5.6vw, 6.4rem)"
-            fontWeight={640}
-            fontFamily="inherit"
-            align="left"
-            shape="circle"
-          />
-          <div className="contact-actions">
-            <a href={`mailto:${content.profile?.email || "13673958331@163.com"}?subject=作品合作咨询`}>
-              <BlurText as="span" text="联系我，聊聊你的项目" delay={55} /> <ArrowRight size={21} />
-            </a>
-            <a href={`tel:${(content.profile?.phone || "166 2511 6217").replace(/\s+/g, "")}`}><BlurText as="span" text={content.profile?.phone || "166 2511 6217"} delay={55} /></a>
+          <div className="contact-copy">
+            <BlurText as="h2" text={"期待合作，\n一起把故事做得更好。"} delay={100} />
+            <div className="contact-actions">
+              <a href={`mailto:${content.profile?.email || "13673958331@163.com"}?subject=作品合作咨询`}>
+                <BlurText as="span" text="聊聊你的项目" delay={55} /> <ArrowRight size={21} />
+              </a>
+              <a href={`tel:${(content.profile?.phone || "166 2511 6217").replace(/\s+/g, "")}`}><BlurText as="span" text={content.profile?.phone || "166 2511 6217"} delay={55} /></a>
+            </div>
+          </div>
+          <div className="contact-frame">
+            <div className="contact-media" aria-hidden="true">
+              <img src={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")} data-fallback-src={localAsset("contact-lighthouse.png")} onError={useLocalAssetFallback} alt="" />
+              {content.siteMedia.contactVideo && (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  src={content.siteMedia.contactVideo}
+                  poster={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")}
+                />
+              )}
+            </div>
           </div>
         </div>
         <footer className="footer page-shell">

@@ -15,3 +15,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Keep the page image-led and restrained. Avoid template-like card grids, decorative gradients, glassmorphism, neon cyberpunk styling, and excessive rounded corners.
 - The intended surface is desktop-first React + Vite with a maximum content width of 1700px.
 - The public default identity is 周耀. Browser metadata and the initial homepage render must never flash or fall back to 李万民 before remote content loads.
+- The visual direction is a restrained cold-luxury editorial portfolio: charcoal surfaces, silver-grey accents, sharp corners, generous spacing, image-first hero and contact sections, and subtle round-particle typography.
+- Hero and contact backgrounds default to images but retain optional video uploads. Preserve the four content areas: short drama, other works, character images, and scene images.

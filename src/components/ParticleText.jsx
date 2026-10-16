@@ -32,6 +32,7 @@ export default function ParticleText({
   align = "center",
   gradient = false,
   glow = false,
+  shape = "square",
 }) {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
@@ -216,7 +217,12 @@ export default function ParticleText({
         if (influence > 0.08) {
           highlighted.push([drawX, drawY]);
         } else {
-          context.rect(drawX, drawY, particleSize, particleSize);
+          if (shape === "circle") {
+            context.moveTo(drawX + particleSize, drawY);
+            context.arc(drawX, drawY, particleSize, 0, Math.PI * 2);
+          } else {
+            context.rect(drawX, drawY, particleSize, particleSize);
+          }
         }
       });
 
@@ -234,7 +240,14 @@ export default function ParticleText({
 
       if (highlighted.length) {
         context.beginPath();
-        highlighted.forEach(([x, y]) => context.rect(x, y, particleSize, particleSize));
+        highlighted.forEach(([x, y]) => {
+          if (shape === "circle") {
+            context.moveTo(x + particleSize, y);
+            context.arc(x, y, particleSize, 0, Math.PI * 2);
+          } else {
+            context.rect(x, y, particleSize, particleSize);
+          }
+        });
         context.fillStyle = highlightColor;
         if (glow) {
           context.shadowColor = highlightColor;
@@ -309,6 +322,7 @@ export default function ParticleText({
     pointerRepel,
     repelRadius,
     scatter,
+    shape,
     stagger,
     text,
     trigger,

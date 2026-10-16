@@ -23,6 +23,8 @@ const strengths = [
 
 const workflow = ["小说改写", "剧本分镜", "AI 资产图", "视频生成", "剪辑成片"];
 
+const displayText = (value) => String(value ?? "").replace(/[—–]/g, "-");
+
 const galleryAssets = [
   { id: "01", category: "characters", fileName: "project-jiuyou.png", label: "古风角色概念", alt: "暗色古风角色与遗迹场景的 AI 概念图" },
   { id: "02", category: "characters", fileName: "project-mercenary.png", label: "末日场景资产", alt: "黑甲角色俯瞰废墟城池的 AI 场景图" },
@@ -103,20 +105,24 @@ export function App() {
       </header>
 
       <section className="hero" id="home" aria-labelledby="hero-title">
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          src={content.siteMedia.heroVideo || cosAsset("hero-editor-studio.mp4")}
-          data-fallback-src={localAsset("hero-editor-studio.mp4")}
-          onError={useLocalAssetFallback}
-          poster={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
-          aria-hidden="true"
-        >
-          <source src={cosAsset("hero-editor-studio.mp4")} type="video/mp4" />
-        </video>
+        <div className="hero-media" aria-hidden="true">
+          <img
+            src={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
+            data-fallback-src={localAsset("hero-editor-studio.png")}
+            onError={useLocalAssetFallback}
+            alt=""
+          />
+          {content.siteMedia.heroVideo && (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              src={content.siteMedia.heroVideo}
+              poster={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
+            />
+          )}
+        </div>
         <div className="hero-shade" />
         <div className="hero-content page-shell">
           <div className="hero-copy">
@@ -125,22 +131,22 @@ export function App() {
               id="hero-title"
               className="hero-title-particles"
               text={content.profile?.displayName || "周耀"}
-              particleSize={2}
-              density={4}
-              color="#ffffff"
-              highlightColor="#8b5cf6"
-              scatter={180}
-              gatherDuration={1600}
-              stagger={420}
-              pointerRepel={0}
-              repelRadius={0}
-              idleDrift={0.7}
+              particleSize={1.35}
+              density={6}
+              color="#f1f2ee"
+              highlightColor="#aab4c1"
+              scatter={54}
+              gatherDuration={1250}
+              stagger={260}
+              pointerRepel={12}
+              repelRadius={76}
+              idleDrift={0.16}
               trigger="hover"
-              fontSize="clamp(5.75rem, 10.8vw, 12.25rem)"
-              fontWeight={800}
+              fontSize="clamp(5.25rem, 9.4vw, 10.75rem)"
+              fontWeight={650}
               fontFamily="inherit"
               align="left"
-              gradient
+              shape="circle"
             />
             <BlurText as="p" text={content.profile?.heroRole || "剪辑师 / AI设计师 / AI漫剧"} delay={75} className="hero-role" />
             <a className="play-link" href="#projects" data-reveal>
@@ -148,7 +154,6 @@ export function App() {
               PLAY REEL
             </a>
           </div>
-          <BlurText as="p" text={"用影像讲好故事\n用 AI 拓展想象的边界"} delay={75} className="hero-note" />
         </div>
       </section>
 
@@ -160,7 +165,7 @@ export function App() {
           <BlurText as="p" text="ABOUT" delay={100} className="eyebrow" />
           <BlurText as="h2" text={"用影像讲好故事，\n用 AI 拓展想象的边界。"} delay={120} />
           <BlurText
-            text={content.profile?.aboutPrimary || "我叫周耀，是一名专注内容叙事与视觉表达的 AI 短剧剪辑师。熟悉真人短剧的粗剪、精剪与节奏把控，也能独立完成 AI 漫剧从小说改写、剧本分镜、资产图建立、视频生成到剪辑成片的完整流程。"}
+            text={displayText(content.profile?.aboutPrimary || "我叫周耀，是一名专注内容叙事与视觉表达的 AI 短剧剪辑师。熟悉真人短剧的粗剪、精剪与节奏把控，也能独立完成 AI 漫剧从小说改写、剧本分镜、资产图建立、视频生成到剪辑成片的完整流程。")}
             delay={32}
           />
           <BlurText
@@ -171,7 +176,7 @@ export function App() {
             <div><span>经历</span><strong>{content.profile?.experienceValue || "2+"}<small>{content.profile?.experienceUnit || "年"}</small></strong></div>
             <div><span>代表项目</span><strong>{content.profile?.projectValue || "8"}<small>{content.profile?.projectUnit || "部+"}</small></strong></div>
             <div><span>制作能力</span><strong>全流程</strong></div>
-            <div><span>任职公司</span><b>{content.profile?.companyName || "河南荧灿文化发展"}<br />{content.profile?.companyPeriod || "2024—2026"}</b></div>
+            <div><span>任职公司</span><b>{content.profile?.companyName || "河南荧灿文化发展"}<br />{displayText(content.profile?.companyPeriod || "2024-2026")}</b></div>
           </div>
           <div className="contact-inline" data-reveal>
             <a href={`tel:${(content.profile?.phone || "166 2511 6217").replace(/\s+/g, "")}`}><Phone size={17} />{content.profile?.phone || "166 2511 6217"}</a>
@@ -272,29 +277,41 @@ export function App() {
       </section>
 
       <section className="contact" id="contact">
-        <img src={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")} data-fallback-src={localAsset("contact-lighthouse.png")} onError={useLocalAssetFallback} alt="风暴海岸与远处灯塔的电影画面" />
+        <div className="contact-media" aria-hidden="true">
+          <img src={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")} data-fallback-src={localAsset("contact-lighthouse.png")} onError={useLocalAssetFallback} alt="" />
+          {content.siteMedia.contactVideo && (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              src={content.siteMedia.contactVideo}
+              poster={content.siteMedia.contactBackground || cosAsset("contact-lighthouse.png")}
+            />
+          )}
+        </div>
         <div className="contact-overlay" />
         <div className="contact-content page-shell">
           <BlurText as="p" text="CONTACT" delay={100} className="eyebrow" />
           <ParticleText
             className="contact-title-particles"
             text={"期待与你合作，\n把好故事变成好作品。"}
-            particleSize={2}
-            density={4}
-            color="#ffffff"
-            highlightColor="#8b5cf6"
-            scatter={180}
-            gatherDuration={1600}
-            stagger={420}
-            pointerRepel={0}
-            repelRadius={0}
-            idleDrift={0.7}
+            particleSize={1.25}
+            density={6}
+            color="#f1f2ee"
+            highlightColor="#aab4c1"
+            scatter={44}
+            gatherDuration={1200}
+            stagger={220}
+            pointerRepel={10}
+            repelRadius={72}
+            idleDrift={0.14}
             trigger="hover"
-            fontSize="clamp(3.25rem, 6.1vw, 7rem)"
-            fontWeight={800}
+            fontSize="clamp(3rem, 5.6vw, 6.4rem)"
+            fontWeight={640}
             fontFamily="inherit"
             align="left"
-            gradient
+            shape="circle"
           />
           <div className="contact-actions">
             <a href={`mailto:${content.profile?.email || "13673958331@163.com"}?subject=作品合作咨询`}>
@@ -304,7 +321,7 @@ export function App() {
           </div>
         </div>
         <footer className="footer page-shell">
-          <BlurText as="span" text={content.profile?.footerCopyright || "© 2024—2026 周耀 · 保留所有权利"} delay={35} />
+          <BlurText as="span" text={displayText(content.profile?.footerCopyright || "© 2024-2026 周耀 · 保留所有权利")} delay={35} />
           <BlurText as="span" text="AI EDITOR · AVAILABLE FOR WORK" delay={45} />
           <a href="#home" aria-label="返回顶部"><ArrowUp size={16} /> TOP</a>
         </footer>

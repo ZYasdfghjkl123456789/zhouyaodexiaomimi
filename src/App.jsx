@@ -74,7 +74,7 @@ export function App() {
     return () => {
       document.body.style.overflow = previousOverflow;
     };
-  }, [activeAsset]);
+  }, [activeAsset, activeCategory]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -100,55 +100,54 @@ export function App() {
       </header>
 
       <section className="hero" id="home" aria-labelledby="hero-title">
+        <div className="hero-frame">
+          <div className="hero-media" aria-hidden="true">
+            <img
+              src={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
+              data-fallback-src={localAsset("hero-editor-studio.png")}
+              onError={useLocalAssetFallback}
+              alt=""
+            />
+            {content.siteMedia.heroVideo && (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                src={content.siteMedia.heroVideo}
+                poster={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
+              />
+            )}
+          </div>
+        </div>
         <div className="hero-content page-shell">
           <div className="hero-copy">
-            <p className="hero-kicker">剪辑师 / AI 视觉创作者</p>
             <h1 id="hero-title" className="hero-name">{content.profile?.displayName || "周耀"}</h1>
             <BlurText as="p" text={content.profile?.heroRole || "剪辑师 / AI设计师 / AI漫剧"} delay={75} className="hero-role" />
             <a className="play-link" href="#projects" data-reveal>
               查看作品 <ArrowRight size={18} />
             </a>
           </div>
-          <div className="hero-frame">
-            <div className="hero-media" aria-hidden="true">
-              <img
-                src={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
-                data-fallback-src={localAsset("hero-editor-studio.png")}
-                onError={useLocalAssetFallback}
-                alt=""
-              />
-              {content.siteMedia.heroVideo && (
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  src={content.siteMedia.heroVideo}
-                  poster={content.siteMedia.heroPoster || cosAsset("hero-editor-studio.png")}
-                />
-              )}
-            </div>
-            <ParticleText
-              className="hero-particle-mark"
-              text="ZY"
-              particleSize={1.15}
-              density={7}
-              color="#eceee9"
-              highlightColor="#9ca7b0"
-              scatter={28}
-              gatherDuration={900}
-              stagger={140}
-              pointerRepel={8}
-              repelRadius={58}
-              idleDrift={0.1}
-              trigger="hover"
-              fontSize="clamp(2.8rem, 5vw, 5.5rem)"
-              fontWeight={620}
-              fontFamily="inherit"
-              align="center"
-              shape="circle"
-            />
-          </div>
+          <ParticleText
+            className="hero-particle-mark"
+            text="ZY"
+            particleSize={1.15}
+            density={7}
+            color="#f4f5f2"
+            highlightColor="#b9c0c6"
+            scatter={28}
+            gatherDuration={900}
+            stagger={140}
+            pointerRepel={8}
+            repelRadius={58}
+            idleDrift={0.1}
+            trigger="hover"
+            fontSize="clamp(2.8rem, 5vw, 5.5rem)"
+            fontWeight={620}
+            fontFamily="inherit"
+            align="center"
+            shape="circle"
+          />
         </div>
       </section>
 
@@ -190,7 +189,37 @@ export function App() {
             ["02", "其他板块", "OTHER WORKS", "otherWorks"],
           ].map(([number, title, label, category]) => {
             const projects = content.projects.filter((project) => (project.category || "shortDrama") === category);
-            return <button className="project-category-card project-category-button" type="button" key={category} data-reveal onClick={() => setActiveCategory({ title, label, projects })}><span className="project-category-index">{number}</span><div className="project-category-title"><BlurText as="h3" text={title} delay={120} /><BlurText as="small" text={label} delay={80} /></div><span className="project-category-enter">{projects.length ? `${projects.length} 个项目` : "查看项目"} <ArrowRight size={18} /></span></button>;
+            const openCategory = () => setActiveCategory({ title, label, projects });
+            return (
+              <section className="project-category-block" key={category} data-reveal>
+                <button className="project-category-card project-category-button" type="button" onClick={openCategory}>
+                  <span className="project-category-index">{number}</span>
+                  <div className="project-category-title"><BlurText as="h3" text={title} delay={120} /><BlurText as="small" text={label} delay={80} /></div>
+                  <span className="project-category-enter">{projects.length ? `查看全部 ${projects.length} 项` : "查看项目"} <ArrowRight size={18} /></span>
+                </button>
+                {projects.length ? (
+                  <div className="project-preview-grid">
+                    {projects.slice(0, 3).map((project) => (
+                      <button className="project-preview" type="button" key={project.id} onClick={openCategory} aria-label={`查看项目 ${project.title}`}>
+                        <span className="project-preview-media">
+                          <img src={project.coverUrl} alt={`${project.title}封面`} loading="lazy" />
+                        </span>
+                        <span className="project-preview-copy">
+                          <small>{project.type || title}</small>
+                          <strong>{project.title}</strong>
+                          {project.description && <span>{project.description}</span>}
+                        </span>
+                        <ArrowUpRight size={20} />
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <button className="project-preview-empty" type="button" onClick={openCategory}>
+                    作品上传后会直接展示在这里 <ArrowRight size={18} />
+                  </button>
+                )}
+              </section>
+            );
           })}
         </div>
       </section>
